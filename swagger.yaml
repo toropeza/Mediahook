@@ -1,0 +1,168 @@
+---
+swagger: "2.0"
+info:
+  description: "Schema of MediaHook's Base API"
+  version: "1.0.0"
+  title: "MediaHook Base API"
+  contact:
+    email: "thomasoropeza@gmail.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "virtserver.swaggerhub.com"
+basePath: "/toropeza/mediahook/1.0.0"
+tags:
+- name: "users"
+  description: "Operations for interacting with user profiles"
+- name: "friends"
+  description: "Operations for interacting with user friends"
+schemes:
+- "https"
+paths:
+  /users/create:
+    put:
+      tags:
+      - "users"
+      summary: "creates a user profile"
+      description: "Creates a user profile\n"
+      operationId: "users_create"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "first_name"
+        in: "query"
+        description: "The new user's first name"
+        required: true
+        type: "string"
+      - name: "last_name"
+        in: "query"
+        description: "The new user's last name"
+        required: true
+        type: "string"
+      - name: "username"
+        in: "query"
+        description: "The new user's username"
+        required: true
+        type: "string"
+      - name: "password"
+        in: "query"
+        description: "The new user's password"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Return's the new users access token"
+          schema:
+            $ref: "#/definitions/inline_response_200"
+        400:
+          description: "bad input parameter"
+  /friends/request:
+    put:
+      tags:
+      - "friends"
+      summary: "creates a friend request"
+      description: "Creates a friend request\n"
+      operationId: "friends_request"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "token"
+        in: "query"
+        description: "User's token"
+        required: true
+        type: "string"
+      - name: "user_id"
+        in: "query"
+        description: "The id of user who is making the request"
+        required: true
+        type: "string"
+      - name: "friend_username"
+        in: "query"
+        description: "The username to add as a friend"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Friend Request created successfully"
+        400:
+          description: "Bad input parameter"
+  /friends/accept:
+    put:
+      tags:
+      - "friends"
+      summary: "accepts a friend request"
+      description: "Accepts a friend request\n"
+      operationId: "friends_accept"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "token"
+        in: "query"
+        description: "User's token"
+        required: true
+        type: "string"
+      - name: "user_id"
+        in: "query"
+        description: "The user's id who is accepting the request"
+        required: true
+        type: "string"
+      - name: "friend_username"
+        in: "query"
+        description: "The friend's username who made the request"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "friend request accepted"
+        400:
+          description: "bad input parameter"
+  /friends/list:
+    get:
+      tags:
+      - "friends"
+      summary: "returns a list of friends"
+      description: "Returns a list of friends\n"
+      operationId: "friends_list"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "token"
+        in: "query"
+        description: "User's token"
+        required: true
+        type: "string"
+      - name: "user_id"
+        in: "query"
+        description: "The user's id to retrieve friend list for"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "friend request accepted"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/user"
+        400:
+          description: "bad input parameter"
+definitions:
+  user:
+    required:
+    - "first_name"
+    - "last_name"
+    - "username"
+    properties:
+      first_name:
+        type: "string"
+        example: "John"
+      last_name:
+        type: "string"
+        example: "Doe"
+      username:
+        type: "string"
+        example: "jdoe"
+  inline_response_200:
+    properties:
+      token:
+        type: "string"
+        example: "k4j15jbk4134j123123h13"
